@@ -1,9 +1,17 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
 import UserList from './UserList'
 import useUserStore from './UserStore'
+import Layout from './components/layout';
+import { CssBaseline } from '@mui/material';
+
+import LoginPage from './pages/login'
+import ProfilePage from './pages/profile'
+import RegisterPage from './pages/register'
+import ProductPage from './pages/products'
+import ProductsPage from './pages/products'
+import HomePage from './pages/home'
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,14 +20,16 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
+      <CssBaseline />
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path='login' element={<LoginPage />} />
+          <Route path='register' element={<RegisterPage />} />
+          <Route path='profile' element={<ProfilePage />} />
+        </Route>
+      </Routes>
+
       <h1>Vite + React</h1>
       <UserList />
       <div className="card">
