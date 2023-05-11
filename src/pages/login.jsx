@@ -4,27 +4,40 @@ import { styled } from '@mui/material/styles';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LoadingButton as _LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useLoginUserMutation } from  '../api/authApi';
 
 const LoginPage = () => {
+ 
+
+  const LoadingButton = styled(_LoadingButton)`
+  padding: 0.6rem 0;
+  background-color: #f9d13e;
+  color: #2363eb;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #ebc22c;
+    transform: translateY(-2px);
+  }
+`; 
+
+  const [loginUser, { isLoading, isError, error, isSuccess }] = useLoginUserMutation();
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
- 
+  const onSubmit = (data) => {
+    console.log(data);
+    //loginUser(data);
+  }
 
-/* const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
-    // 👇 Executing the loginUser Mutation
-    loginUser(values);
-  };
- */
-
-/*    const onSubmitHandler =  SubmitHandler(values){
-    // 👇 Executing the loginUser Mutation
-    //loginUser(values);
-    console.log('asdas');
-
-  };  */
- 
-  const onSubmit = (data) => console.log(data);
-
+  useEffect(() => {
+    if (isSuccess) {
+      console.log('login')
+    }
+    if (isError) {
+     console.log(error)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
 
   return (
     <Container
@@ -66,7 +79,7 @@ const LoginPage = () => {
           Login to have access!
         </Typography>
 
-        <FormProvider {...methods}>
+        <FormProvider>
           <Box
             component='form'
             onSubmit={handleSubmit(onSubmit)}
@@ -80,16 +93,10 @@ const LoginPage = () => {
               borderRadius: 2,
             }}
           >
-            <FormInput name='email' label='Email Address' type='email' />
-            <FormInput name='password' label='Password' type='password' />
+            <input name='email' label='Email Address' type='email' {...register('email', { required: true, maxLength: 30 })}/>
+            <input name='password' label='Password' type='password'{...register('password', { required: true, maxLength: 30 })}/>
 
-            <Typography
-              sx={{ fontSize: '0.9rem', mb: '1rem', textAlign: 'right' }}
-            >
-              <LinkItem to='/forgotpassword' style={{ color: '#333' }}>
-                Forgot Password?
-              </LinkItem>
-            </Typography>
+       
 
             <LoadingButton
               variant='contained'
@@ -97,14 +104,11 @@ const LoginPage = () => {
               fullWidth
               disableElevation
               type='submit'
-              loading={isLoading}
+               
             >
               Login
             </LoadingButton>
-
-            <Typography sx={{ fontSize: '0.9rem', mt: '1rem' }}>
-              Need an account? <LinkItem to='/register'>Sign Up Here</LinkItem>
-            </Typography>
+ 
           </Box>
         </FormProvider>
 
