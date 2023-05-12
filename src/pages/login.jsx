@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LoadingButton as _LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLoginUserMutation } from  '../api/authApi';
+import { useEffect } from 'react';
 
 const LoginPage = () => {
  
@@ -26,12 +27,15 @@ const LoginPage = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     console.log(data);
-    //loginUser(data);
+    loginUser(data);
   }
 
   useEffect(() => {
     if (isSuccess) {
       console.log('login')
+      const response = loginUser(data).unwrap();
+
+
     }
     if (isError) {
      console.log(error)
@@ -93,8 +97,8 @@ const LoginPage = () => {
               borderRadius: 2,
             }}
           >
-            <input name='email' label='Email Address' type='email' {...register('email', { required: true, maxLength: 30 })}/>
-            <input name='password' label='Password' type='password'{...register('password', { required: true, maxLength: 30 })}/>
+            <input name='email' label='Email Address' type='email' {...register('email', { required: true, maxLength: 30 })} value={'kemal@gazatem.com'}/>
+            <input name='password' label='Password' type='password'{...register('password', { required: true, maxLength: 30 })} value={'101010'}/>
 
        
 

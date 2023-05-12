@@ -1,22 +1,33 @@
-// Or from '@reduxjs/toolkit/query' if not using the auto-generated hooks
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { userApi } from './userApi';
 
 export const authApi = createApi({
     reducerPath: 'authApi',
-    baseQuery: fetchBaseQuery({ baseUrl: '/' }),
-    tagTypes: ['User'],
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000' }),
     endpoints: (build) => ({
         loginUser: build.mutation({
             query(body) {
                 return {
-                    url: `login`,
+                    url: `/api/login`,
                     method: 'POST',
                     body,
+                    credentials: 'include'
                 }
             },
+            providesTags: ['User'],
             // Invalidates all Post-type queries providing the `LIST` id - after all, depending of the sort order,
             // that newly created post could show up in any lists.
-            invalidatesTags: [{ type: 'User', id: 'LIST' }],
+            transformResponse: (response, meta, arg) => response.data,
+            transformErrorResponse: (response, meta, arg) => response.status,
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                   console.log('onQueryStarted', args);
+                  await queryFulfilled;
+                  await dispatch(userApi.endpoints.getMe.initiate(null));
+                } catch (error) {
+                    console.log(error)
+                }
+              },
         }),
 
         getPosts: build.query({
