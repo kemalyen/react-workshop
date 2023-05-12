@@ -10,6 +10,7 @@ import ProfilePage from './pages/profile'
 import RegisterPage from './pages/register'
 import ProductPage from './pages/products'
 import ProductsPage from './pages/products'
+import Post from './pages/post';
 import HomePage from './pages/home'
 import { Route, Routes } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ function App() {
           <Route path='login' element={<LoginPage />} />
           <Route path='register' element={<RegisterPage />} />
           <Route path='profile' element={<ProfilePage />} />
+          <Route path='posts' element={<Post />} />
         </Route>
       </Routes>
 
